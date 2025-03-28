@@ -13,12 +13,18 @@ A minimal React application demonstrating component structure and props.
 - No CSS/styling (pure HTML structure)
 
 ## Clone the repository
-- git clone https://github.com/hpord/fullstackopen.git
-- cd part1/courseinfo
+```bash
+git clone https://github.com/hpord/fullstackopen.git
+cd part1/courseinfo
+```
 
 ## Install dependencies
-- npm install
+```bash
+npm install
+```
 
 ## Run development server
-- npm run dev
-- Then open http://localhost:5173 in your browser
+```bash
+npm run dev
+```
+Then open http://localhost:5173 in your browser
