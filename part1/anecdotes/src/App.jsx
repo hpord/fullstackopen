@@ -10,9 +10,10 @@ const Button = (props) => {
 }
 
 const Anecdote = (props) => {
-  const {text} = props
+  const {title, text} = props
   return (
     <dt>
+      <h2>{title}</h2>
       {text}
     </dt>
   )
@@ -39,8 +40,9 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [selected, setSelected] = useState(Math.floor(Math.random() * anecdotes.length))
+  const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  const [mostVotes, setMostVotes ] = useState(0)
 
   const handleAnecdote = () => {
     let newSelected
@@ -57,18 +59,18 @@ const App = () => {
         else return vote
       }
     ))
+    if (votes[selected] + 1 > votes[mostVotes]) setMostVotes(selected)
+    else setMostVotes(mostVotes)
   }
 
-  console.log("selected: " ,selected)
-  console.log("votes: " ,votes)
   return (
     <div>
-      <dl>
-        <Anecdote text={anecdotes[selected]}/>
+        <Anecdote title="Anecdote of the day" text={anecdotes[selected]}/>
         <Votes numVotes={votes[selected]} />
         <Button onClick={handleVotes} text="vote" />
         <Button onClick={handleAnecdote} text="next anecdote" />
-      </dl>
+        <Anecdote title="Anecdote with most votes" text={anecdotes[mostVotes]}/>
+        <Votes numVotes={votes[mostVotes]} />
     </div>
   )
 }
