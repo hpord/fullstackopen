@@ -1,4 +1,4 @@
-const Header = ({course}) => <h1>{course}</h1>
+const Header = ({course}) => <h2>{course}</h2>
 
 const Content = ({parts}) => (
   <>
@@ -14,7 +14,7 @@ const Part = ({name, exercises}) => (
   </p>
 )
 
-const Total = ({total}) => <p>Number of exercises {total}</p>
+const Total = ({total}) => <p><strong>Total of {total} exercises</strong></p>
 
 const Course = ({course}) => (
   <>
