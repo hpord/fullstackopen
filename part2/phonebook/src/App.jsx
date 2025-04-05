@@ -1,12 +1,18 @@
 import { useState } from 'react'
-import Number from './components/Number'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1234567' }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const[stringFind, setStringFind] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
@@ -36,26 +42,25 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleFindChange = (event) => {
+    setStringFind(event.target.value.trim())
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <dl>
-        {persons.map((person) => (
-          <Number key={person.name} name={person.name} number={person.number} />
-        ))}
-      </dl>
+      <Filter onChange={handleFindChange}/>
+      <h3>Add a new</h3>
+      <PersonForm 
+        onSubmit={addName}
+        value1={newName} onChange1={handleNameChange}
+        value2={newNumber} onChange2={handleNumberChange}
+      />
+      <h3>Numbers</h3>
+      <Persons persons={persons.filter(person => 
+        person.name.toLowerCase()
+        .includes(stringFind.trim().toLowerCase())
+      )} />
     </div>
   )
 }
