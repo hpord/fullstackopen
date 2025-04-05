@@ -3,14 +3,15 @@ import Number from './components/Number'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '040-1234567' }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addName = (event) => {
-    const newNameTrim = newName.trim()
     event.preventDefault()
 
+    const newNameTrim = newName.trim()
     if (persons.some(person => 
       person.name.toLowerCase() === newNameTrim.toLowerCase()
     )) {
@@ -19,14 +20,20 @@ const App = () => {
     }
 
     const nameObject = {
-      name: newNameTrim
+      name: newNameTrim,
+      number: newNumber
     }
     setPersons(persons.concat(nameObject))
     setNewName('')
+    setNewNumber('')
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -37,13 +44,16 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
+          number: <input value={newNumber} onChange={handleNumberChange} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <dl>
         {persons.map((person) => (
-          <Number key={person.name} name={person.name} />
+          <Number key={person.name} name={person.name} number={person.number} />
         ))}
       </dl>
     </div>

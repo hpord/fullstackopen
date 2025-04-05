@@ -1,5 +1,5 @@
-const Number = ({ name }) => {
-    return <dt>{name}</dt>
+const Number = ({ name, number }) => {
+    return <dt>{name} {number}</dt>
   }
   
   export default Number
