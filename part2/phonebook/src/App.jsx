@@ -1,9 +1,9 @@
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/persons'
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,16 +12,12 @@ const App = () => {
   const[stringFind, setStringFind] = useState('')
 
   useEffect(() => {
-    //console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        //console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialNotes => {
+        setPersons(initialNotes)
       })
   }, [])
-
-  //console.log('render', persons.length, 'notes')
 
   const addName = (event) => {
     event.preventDefault()
@@ -39,10 +35,10 @@ const App = () => {
       number: newNumber
     }
 
-    axios
-    .post('http://localhost:3001/persons', nameObject)
-    .then(response => {
-      setPersons(persons.concat(response.data))
+    personService
+    .create(nameObject)
+    .then(returnedNote => {
+      setPersons(persons.concat(returnedNote))
       setNewName('')
       setNewNumber('')
     })
