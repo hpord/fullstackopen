@@ -23,16 +23,26 @@ const App = () => {
     event.preventDefault()
 
     const newNameTrim = newName.trim()
-    if (persons.some(person => 
-      person.name.toLowerCase() === newNameTrim.toLowerCase()
-    )) {
-      alert(`${newNameTrim} is already added to phonebook`);
-      return
-    }
-
     const nameObject = {
       name: newNameTrim,
       number: newNumber
+    }
+
+    if (persons.some(person => 
+      person.name.toLowerCase() === newNameTrim.toLowerCase()
+    )) {
+      //alert(`${newNameTrim} is already added to phonebook`);
+      if (window.confirm(`${newNameTrim} is already added to phonebook, replacethe old number with a new one?`)) {
+        const idUpdate = persons.find(person => person.name.toLowerCase() === newNameTrim.toLowerCase()).id
+        personService
+        .update(idUpdate, nameObject)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== idUpdate ? person : returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+      return
     }
 
     personService
