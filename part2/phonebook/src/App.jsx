@@ -14,8 +14,8 @@ const App = () => {
   useEffect(() => {
     personService
       .getAll()
-      .then(initialNotes => {
-        setPersons(initialNotes)
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -37,11 +37,23 @@ const App = () => {
 
     personService
     .create(nameObject)
-    .then(returnedNote => {
-      setPersons(persons.concat(returnedNote))
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
     })
+  }
+
+  const toggleDelete = (id) => {
+    if (window.confirm("Do you really want to leave?")) {
+      personService
+      .deleteElement(id)
+      .then(deletedPerson => {
+        console.log(deletedPerson)
+        setPersons(persons.filter(person => person.id != id))
+      })
+    }
+    
   }
 
   const handleNameChange = (event) => {
@@ -70,7 +82,9 @@ const App = () => {
       <Persons persons={persons.filter(person => 
         person.name.toLowerCase()
         .includes(stringFind.trim().toLowerCase())
-      )} />
+      )} 
+      toggleDeleteRef={toggleDelete}
+      />
     </div>
   )
 }
