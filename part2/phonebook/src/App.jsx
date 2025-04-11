@@ -13,6 +13,16 @@ const App = () => {
   const[stringFind, setStringFind] = useState('')
   const [notificationConf, setNotificationConf] = useState(null)
 
+  const notifBasicStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
   useEffect(() => {
     personService
       .getAll()
@@ -30,16 +40,6 @@ const App = () => {
       number: newNumber
     }
 
-    const notifBasicStyle = {
-      color: 'green',
-      background: 'lightgrey',
-      fontSize: 20,
-      borderStyle: 'solid',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 10
-    }
-
     if (persons.some(person => 
       person.name.toLowerCase() === newNameTrim.toLowerCase()
     )) {
@@ -55,7 +55,11 @@ const App = () => {
           setNotificationConf(
             {
               message: `Modified ${returnedPerson.name}`,
-              style: { ...notifBasicStyle }
+              style: {
+                ...notifBasicStyle,
+                color: 'green',
+                background: 'lightgrey'
+              }
             }
           )
           setTimeout(() => {
@@ -75,7 +79,11 @@ const App = () => {
       setNotificationConf(
         {
           message: `Added ${returnedPerson.name}`,
-          style: { ...notifBasicStyle }
+          style: {
+            ...notifBasicStyle,
+            color: 'green',
+            background: 'lightgrey',
+          }
         }
       )
       setTimeout(() => {
@@ -85,11 +93,28 @@ const App = () => {
   }
 
   const toggleDelete = (id) => {
-    if (window.confirm(`Delete ${persons.find(person => person.id == id).name}?`)) {
+    const findPerson = persons.find(person => person.id == id).name
+    if (window.confirm(`Delete ${findPerson}?`)) {
       personService
       .deleteElement(id)
       .then(deletedPerson => {
-        console.log(deletedPerson)
+        console.log('Deleted', deletedPerson)
+      })
+      .catch(error => {
+        setNotificationConf(
+          {
+            message: `Information of ${findPerson} has already been removed from server`,
+            style: {
+              ...notifBasicStyle,
+              color: 'red',
+              background: 'lightgrey',
+            }
+          }
+        )
+        setTimeout(() => {
+          setNotificationConf(null)
+        }, 4000)
+      }).finally(() => {
         setPersons(persons.filter(person => person.id != id))
       })
     }
