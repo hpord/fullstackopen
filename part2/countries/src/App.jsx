@@ -6,35 +6,38 @@ import { useState, useEffect } from 'react'
 
 const App = () => {
   const [countries, setCountries] = useState(null)
-  const[country, setCountry] = useState('')
+  const[countryText, setCountryText] = useState('')
 
   useEffect(() => {
-    console.log('effect run, country is now', country)
-    if (country) {
-      console.log('fetching exchange rates...')
+    if (countryText) {
       countryService
         .getAll()
         .then(foundCountries => {
           const arrayCountries = foundCountries.filter(foundCountry =>
             foundCountry.name.common.toLowerCase()
-            .includes(country.toLowerCase())
+            .includes(countryText.toLowerCase())
           )
           setCountries(arrayCountries.length ? arrayCountries : null)
         })
     }
-    //else setCountries({})
-  }, [country])
+  }, [countryText])
 
   const handleFindChange = (event) => {
     const text = event.target.value.trim()
-    setCountry(event.target.value.trim())
+    setCountryText(event.target.value.trim())
     if (!text) setCountries(null)
+  }
+
+  const selectCountry = (id) => {
+    setCountryText(countries.find(country =>
+      country.cca3 === id
+    ).name.common)
   }
 
   return (
     <div>
       <Filter onChange={handleFindChange}/>
-      <Result countries={countries}/>
+      <Result countries={countries} onChange={selectCountry}/>
     </div>
   )
 }

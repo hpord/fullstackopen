@@ -1,6 +1,6 @@
 import InfoCountry from "./InfoCountry"
 
-const Result = ({ countries }) => {
+const Result = ({ countries, onChange }) => {
     if (!countries) return null
     if (countries.length > 10) {
         return (
@@ -13,7 +13,10 @@ const Result = ({ countries }) => {
         return (
             <dl>
                 {countries.map(country => 
-                <dt key={country.tld}>{country.name.common}</dt>
+                <dt key={country.cca3}>
+                    {country.name.common + ' '}
+                    <button onClick={() => onChange(country.cca3)}> Show </button>
+                </dt>
                 )}
             </dl>
         )

@@ -1,5 +1,4 @@
 const InfoCountry = ({ country }) => {
-    //console.log('Lenguas:', Object.values(country))
     return (
         <>
             <h1>
@@ -19,7 +18,7 @@ const InfoCountry = ({ country }) => {
                     <li key={language}>{language}</li>
                 )}
             </ul>
-            <img src={country.flags.png} alt={`${country.name.common} flag`} />
+            <img src={country.flags.png} alt={`${country.name.common}'s flag`} />
         </>
     )
 }
