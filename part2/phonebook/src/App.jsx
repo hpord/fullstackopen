@@ -1,6 +1,7 @@
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 import { useState, useEffect } from 'react'
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const[stringFind, setStringFind] = useState('')
+  const [notificationConf, setNotificationConf] = useState(null)
 
   useEffect(() => {
     personService
@@ -28,6 +30,16 @@ const App = () => {
       number: newNumber
     }
 
+    const notifBasicStyle = {
+      color: 'green',
+      background: 'lightgrey',
+      fontSize: 20,
+      borderStyle: 'solid',
+      borderRadius: 5,
+      padding: 10,
+      marginBottom: 10
+    }
+
     if (persons.some(person => 
       person.name.toLowerCase() === newNameTrim.toLowerCase()
     )) {
@@ -40,6 +52,15 @@ const App = () => {
           setPersons(persons.map(person => person.id !== idUpdate ? person : returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationConf(
+            {
+              message: `Modified ${returnedPerson.name}`,
+              style: { ...notifBasicStyle }
+            }
+          )
+          setTimeout(() => {
+            setNotificationConf(null)
+          }, 4000)
         })
       }
       return
@@ -51,6 +72,15 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
+      setNotificationConf(
+        {
+          message: `Added ${returnedPerson.name}`,
+          style: { ...notifBasicStyle }
+        }
+      )
+      setTimeout(() => {
+        setNotificationConf(null)
+      }, 4000)
     })
   }
 
@@ -81,6 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notifConfiguration={notificationConf} />
       <Filter onChange={handleFindChange}/>
       <h3>Add a new</h3>
       <PersonForm 
