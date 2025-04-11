@@ -45,7 +45,7 @@ const App = () => {
   }
 
   const toggleDelete = (id) => {
-    if (window.confirm("Do you really want to leave?")) {
+    if (window.confirm(`Delete ${persons.find(person => person.id == id).name}?`)) {
       personService
       .deleteElement(id)
       .then(deletedPerson => {
